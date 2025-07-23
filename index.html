@@ -1,0 +1,1368 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Keiko - Storymaker para Casamentos</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #ff6b8a;
+            --secondary-color: #ffb3c6;
+            --dark-color: #2c2c2c;
+            --light-color: #f8f9fa;
+            --accent-color: #fff;
+            --gradient: linear-gradient(135deg, #ff6b8a 0%, #ffa726 100%);
+            --shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            color: var(--dark-color);
+            scroll-behavior: smooth;
+        }
+
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            padding: 1rem 0;
+            transition: all 0.3s ease;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark-color);
+            font-weight: 500;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-color);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background: var(--gradient);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            /* background: var(--gradient); */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .video-background {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 100%;
+            height: 100%;
+            transform: translate(-50%, -50%);
+            z-index: 0;
+        }
+
+        .video-background video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: grayscale(100%);
+        }
+        
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><defs><radialGradient id="a"><stop offset="0" stop-color="%23ffffff" stop-opacity="0.1"/><stop offset="1" stop-color="%23ffffff" stop-opacity="0"/></radialGradient></defs><g fill="url(%23a)"><circle cx="200" cy="200" r="200"/><circle cx="800" cy="300" r="150"/><circle cx="300" cy="700" r="100"/><circle cx="700" cy="800" r="180"/></g></svg>');
+            opacity: 0.1;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            opacity: 0;
+            animation: fadeInUp 1s ease forwards;
+        }
+
+        .hero .subtitle {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            opacity: 0;
+            animation: fadeInUp 1s ease 0.3s forwards;
+        }
+
+        .hero .description {
+            font-size: 1.1rem;
+            margin-bottom: 3rem;
+            opacity: 0;
+            animation: fadeInUp 1s ease 0.6s forwards;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 1rem 2.5rem;
+            background: white;
+            color: var(--primary-color);
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow);
+            opacity: 0;
+            animation: fadeInUp 1s ease 0.9s forwards;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+        }
+
+        /* About Section */
+        .about {
+            padding: 6rem 0;
+            background: var(--light-color);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 3rem;
+            margin-bottom: 3rem;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .about-text {
+            font-size: 1.2rem;
+            line-height: 1.8;
+        }
+
+        .about-text h3 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .about-image {
+            text-align: center;
+        }
+
+        .about-image img {
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin: 0 auto;
+            box-shadow: var(--shadow);
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        .about-image:hover img {
+            transform: scale(1.1) translateY(-10px);
+            border-radius: 45%;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+
+        /* Packages Section */
+        .packages {
+            padding: 6rem 0;
+            background: white;
+        }
+
+        .packages-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .package-card {
+            background: white;
+            border-radius: 20px;
+            padding: 2.5rem;
+            text-align: center;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .package-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient);
+        }
+
+        .package-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .package-card.featured {
+            background: var(--gradient);
+            color: white;
+            transform: scale(1.05);
+        }
+
+        .package-card.featured::before {
+            background: white;
+        }
+
+        .package-name {
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+        }
+
+        .package-card.featured .package-name {
+            color: white;
+        }
+
+        .package-price {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 2rem;
+            color: var(--primary-color);
+        }
+
+        .package-card.featured .package-price {
+            color: white;
+        }
+
+        .package-features {
+            list-style: none;
+            text-align: left;
+            margin-bottom: 2rem;
+        }
+
+        .package-features li {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #eee;
+            position: relative;
+            padding-left: 1.5rem;
+        }
+
+        .package-features li::before {
+            content: '♡';
+            position: absolute;
+            left: 0;
+            color: var(--primary-color);
+        }
+
+        .package-card.featured .package-features li {
+            border-color: rgba(255,255,255,0.2);
+        }
+
+        .package-card.featured .package-features li::before {
+            color: white;
+        }
+
+        /* Additional Services */
+        .additional-services {
+            padding: 6rem 0;
+            background: var(--light-color);
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 3rem;
+        }
+
+        .service-item {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            transition: transform 0.3s ease;
+        }
+
+        .service-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .service-price {
+            color: var(--primary-color);
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        /* Portfolio Section */
+        .portfolio {
+            padding: 6rem 0;
+            background: white;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            font-size: 1.2rem;
+            color: #666;
+            margin-bottom: 3rem;
+        }
+
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .video-placeholder {
+            aspect-ratio: 9/16;
+            background: linear-gradient(45deg, #f0f0f0, #e0e0e0);
+            border-radius: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .video-placeholder:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+
+        .video-placeholder video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 1;
+        }
+
+        .video-placeholder .video-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.3);
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            color: white;
+        }
+
+        .video-placeholder:hover .video-overlay {
+            opacity: 1;
+        }
+        
+        .video-placeholder .video-overlay p,
+        .video-placeholder .video-overlay small {
+            color: white;
+        }
+
+        .play-button {
+            width: 60px;
+            height: 60px;
+            background: var(--gradient);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            transition: transform 0.3s ease;
+        }
+
+        .video-placeholder:hover .play-button {
+            transform: scale(1.1);
+        }
+
+        .video-placeholder p {
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .video-placeholder small {
+            color: var(--primary-color);
+            font-weight: 500;
+        }
+
+        .instagram-icon {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 1.2rem;
+        }
+
+        .instagram-badge {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--primary-color);
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .modal-icon {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            font-size: 1.2rem;
+        }
+
+        .video-embed {
+            aspect-ratio: 9/16;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .video-placeholder-loading {
+            aspect-ratio: 9/16;
+            background: linear-gradient(45deg, #f0f0f0, #e0e0e0);
+            border-radius: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+        }
+
+        .loading-text {
+            color: #888;
+            font-size: 0.9rem;
+            margin-top: 1rem;
+        }
+
+        /* Modal Styles */
+        .reel-modal {
+            display: none;
+            position: fixed;
+            z-index: 10000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.8);
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            position: relative;
+            background-color: white;
+            margin: 5% auto;
+            padding: 0;
+            width: 90%;
+            max-width: 400px;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            color: white;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 10001;
+            background: rgba(0,0,0,0.5);
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .close-modal:hover {
+            background: rgba(0,0,0,0.7);
+        }
+
+        #reel-container {
+            width: 100%;
+            aspect-ratio: 9/16;
+            background: #f0f0f0;
+        }
+
+        /* Process Section */
+        .process {
+            padding: 6rem 0;
+            background: var(--light-color);
+        }
+
+        .process-timeline {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .process-step {
+            display: flex;
+            align-items: flex-start;
+            gap: 2rem;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .process-step:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            left: 35px;
+            top: 70px;
+            width: 2px;
+            height: 60px;
+            background: var(--gradient);
+            opacity: 0.3;
+        }
+
+        .step-number {
+            width: 70px;
+            height: 70px;
+            background: var(--gradient);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            font-weight: bold;
+            flex-shrink: 0;
+            box-shadow: var(--shadow);
+        }
+
+        .step-content h3 {
+            color: var(--primary-color);
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .step-content p {
+            line-height: 1.6;
+            color: #666;
+        }
+
+        /* Story Highlight Section */
+        .story-highlight {
+            padding: 6rem 0;
+            background: white;
+        }
+
+        .story-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .story-card {
+            background: var(--light-color);
+            padding: 2.5rem;
+            border-radius: 20px;
+            position: relative;
+            transition: transform 0.3s ease;
+        }
+
+        .story-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .story-card::before {
+            content: '💕';
+            position: absolute;
+            top: -10px;
+            right: 20px;
+            font-size: 2rem;
+            background: white;
+            padding: 0.5rem;
+            border-radius: 50%;
+            box-shadow: var(--shadow);
+        }
+
+        .story-card h3 {
+            color: var(--primary-color);
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+        }
+
+        .story-card p {
+            font-style: italic;
+            line-height: 1.7;
+            margin-bottom: 1.5rem;
+        }
+
+        .story-tag {
+            display: inline-block;
+            background: var(--gradient);
+            color: white;
+            padding: 0.3rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        /* Testimonials Section */
+        .testimonials {
+            padding: 6rem 0;
+            background: var(--light-color);
+        }
+
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .testimonial-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s ease;
+            position: relative;
+        }
+
+        .testimonial-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .testimonial-card::before {
+            content: '"';
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 4rem;
+            color: var(--primary-color);
+            background: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--shadow);
+        }
+
+        .stars {
+            color: var(--primary-color);
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            margin-top: 1rem;
+        }
+
+        .testimonial-card p {
+            font-style: italic;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .testimonial-card strong {
+            color: var(--primary-color);
+            font-size: 1.1rem;
+        }
+
+        .testimonial-card small {
+            display: block;
+            color: #666;
+            margin-top: 0.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .process-step {
+                flex-direction: column;
+                text-align: center;
+                gap: 1rem;
+            }
+
+            .process-step:not(:last-child)::after {
+                display: none;
+            }
+
+            .story-cards {
+                grid-template-columns: 1fr;
+            }
+
+            .video-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        .contact {
+            padding: 4rem 0;
+            background: var(--gradient);
+            color: white;
+            text-align: center;
+        }
+
+        .contact-info {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .contact-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem 2.5rem;
+            width: 300px;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .contact-card:hover {
+            transform: translateY(-10px);
+            background: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        }
+
+        .contact-card .icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .contact-card h4 {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .contact-card a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: opacity 0.3s ease;
+        }
+
+        .contact-card a:hover {
+            opacity: 0.8;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--dark-color);
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Mobile Responsive */
+        .mobile-menu {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+        }
+
+        .mobile-menu span {
+            width: 25px;
+            height: 3px;
+            background: var(--dark-color);
+            margin: 3px 0;
+            transition: 0.3s;
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .mobile-menu {
+                display: flex;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero .subtitle {
+                font-size: 1.2rem;
+            }
+
+            .about-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .packages-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .contact-info {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .package-card.featured {
+                transform: none;
+            }
+        }
+
+        /* Scroll animations */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">KEIKO STORYMAKER</div>
+            <ul class="nav-links">
+                <li><a href="#home">Início</a></li>
+                <li><a href="#about">Sobre</a></li>
+                <li><a href="#portfolio">Portfólio</a></li>
+                <li><a href="#packages">Pacotes</a></li>
+                <li><a href="#services">Serviços</a></li>
+                <li><a href="#contact">Contato</a></li>
+            </ul>
+            <div class="mobile-menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </nav>
+    </header>
+
+    <section id="home" class="hero">
+        <div class="video-background">
+            <video autoplay muted loop playsinline>
+                <source src="keiko.mp4" type="video/mp4">
+            </video>
+        </div>
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <p class="subtitle">♡ Transformando momentos em memórias vivas ♡</p>
+            <p class="description">Olá! Somos Michelle e Paulo, storymakers apaixonados por capturar os detalhes mais lindos e significativos do seu casamento, com sensibilidade, autenticidade e muito amor pelo que fazemos.</p>
+            <a href="#contact" class="cta-button">Vamos conversar?</a>
+        </div>
+    </section>
+
+    <section id="about" class="about">
+        <div class="container">
+            <h2 class="section-title fade-in">Quem Somos</h2>
+            <div class="about-content">
+                <div class="about-text fade-in">
+                    <h3>Michelle & Paulo</h3>
+                    <p>Juntos, registramos em tempo real os detalhes mais lindos e significativos do seu casamento. Nossa paixão é transformar cada momento especial em memórias que durarão para sempre.</p>
+                    <p>Com sensibilidade, autenticidade e muito amor pelo que fazemos, criamos stories e reels que contam a história única do seu grande dia.</p>
+                </div>
+                <div class="about-image fade-in">
+                    <img src="perfil.png" alt="Michelle & Paulo">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Portfolio Section -->
+    <section id="portfolio" class="portfolio">
+        <div class="container">
+            <h2 class="section-title fade-in">Portfólio em Destaque</h2>
+            <p class="section-subtitle fade-in">Alguns dos nossos trabalhos mais especiais</p>
+            <div class="video-grid">
+            
+                <!-- Opção 3: Link com preview customizado -->
+                <div class="video-placeholder fade-in">
+                    <video autoplay muted loop playsinline>
+                        <source src="reelsA.mp4" type="video/mp4">
+                    </video>
+                    <div class="video-overlay" onclick="openInstagramReel('https://www.instagram.com/p/DBO072tOXCp/')">
+                        <div class="play-button">▶</div>
+                        <p>Cerimônia Eloisa & Alguem</p>
+                        <small>Pré-Wedding</small>
+                        <div class="instagram-badge">Ver no Instagram</div>
+                    </div>
+                </div>
+                
+                                <!-- Opção 3: Link com preview customizado -->
+                <div class="video-placeholder fade-in">
+                    <video autoplay muted loop playsinline>
+                        <source src="reelsB.mp4" type="video/mp4">
+                    </video>
+                    <div class="video-overlay" onclick="openInstagramReel('https://www.instagram.com/p/DFnboQ1uCIu/')">
+                        <div class="play-button">▶</div>
+                        <p>Cerimônia Nathany & Winston</p>
+                        <small>Live + Stories</small>
+                        <div class="instagram-badge">Ver no Instagram</div>
+                    </div>
+                </div>
+
+                                <!-- Opção 3: Link com preview customizado -->
+                <div class="video-placeholder fade-in">
+                    <video autoplay muted loop playsinline>
+                        <source src="reelsC.mp4" type="video/mp4">
+                    </video>
+                    <div class="video-overlay" onclick="openInstagramReel('https://www.instagram.com/p/C_k3Dlvui0Q/')">
+                        <div class="play-button">▶</div>
+                        <p>Noivinha Eloisa</p>
+                        <small>Live + Stories</small>
+                        <div class="instagram-badge">Ver no Instagram</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Process Section -->
+    <section class="process">
+        <div class="container">
+            <h2 class="section-title fade-in">Nosso Processo</h2>
+            <div class="process-timeline">
+                <div class="process-step fade-in">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h3>Pré-briefing</h3>
+                        <p>Entendemos seus desejos, estilo do casamento e detalhes únicos do evento. Planejamos cada momento para capturar sua essência.</p>
+                    </div>
+                </div>
+                <div class="process-step fade-in">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h3>Dia da Captação</h3>
+                        <p>Trabalhamos de forma leve e discreta, integrando-nos ao momento. Stories em tempo real e captação dos melhores ângulos.</p>
+                    </div>
+                </div>
+                <div class="process-step fade-in">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h3>Pós-produção</h3>
+                        <p>Editamos com carinho cada detalhe e entregamos conteúdo pronto em até 15 dias úteis via link em nuvem.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pacotes Seção -->
+
+    <section id="packages" class="packages">
+        <div class="container">
+            <h2 class="section-title fade-in">Nossos Pacotes</h2>
+            <div class="packages-grid">
+                <div class="package-card fade-in">
+                    <h3 class="package-name">TSUBAKI</h3>
+                    <div class="package-price">R$ 450</div>
+                    <ul class="package-features">
+                        <li>Cobertura da Cerimônia</li>
+                        <li>3 horas de captação</li>
+                        <li>Todos os stories postados em tempo real no Instagram</li>
+                        <li>Entrega dos vídeos via link em nuvem com acesso vitalício</li>
+                    </ul>
+                </div>
+
+                <div class="package-card fade-in">
+                    <h3 class="package-name">SUMIRE</h3>
+                    <div class="package-price">R$ 650</div>
+                    <ul class="package-features">
+                        <li>Cobertura da Cerimônia</li>
+                        <li>3 horas de captação</li>
+                        <li>Todos os stories postados em tempo real no Instagram</li>
+                        <li>1 reel de até 1 minuto: melhores momentos da cerimônia</li>
+                        <li>Entrega dos vídeos via link em nuvem com acesso vitalício</li>
+                    </ul>
+                </div>
+
+                <div class="package-card fade-in">
+                    <h3 class="package-name">HIMAWARI</h3>
+                    <div class="package-price">R$ 850</div>
+                    <ul class="package-features">
+                        <li>Cobertura da Cerimônia e recepção, até o momento da dança</li>
+                        <li>6 horas de captação</li>
+                        <li>Todos os stories postados em tempo real no Instagram</li>
+                        <li>2 reels de até 1 minuto cada: melhores momentos da cerimônia e outro à escolha do casal</li>
+                        <li>Entrega dos vídeos via link em nuvem com acesso vitalício</li>
+                    </ul>
+                </div>
+
+                <div class="package-card featured fade-in">
+                    <h3 class="package-name">SAKURA</h3>
+                    <div class="package-price">R$ 1.500</div>
+                    <ul class="package-features">
+                        <li>Making of da noiva</li>
+                        <li>Cobertura completa da cerimônia e recepção</li>
+                        <li>8 horas de cobertura</li>
+                        <li>Todos os stories postados em tempo real no Instagram</li>
+                        <li>Destaque com os stories postados no Instagram</li>
+                        <li>3 reels de até 1 minuto: making of noiva, melhores momentos da cerimônia, e da recepção</li>
+                        <li>Mini Wedding Film de até 3 minutos com os momentos mais emocionantes do dia</li>
+                        <li>Entrega dos vídeos via link em nuvem com acesso vitalício</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div style="text-align: center; margin-top: 2rem; font-style: italic; color: #666;">
+                *Prazos de Entrega: Stories: em tempo real. Reels: até 7 dias úteis. Mini Wedding Film: até 15 dias úteis.
+            </div>
+        </div>
+    </section>
+
+    <!-- Serviços Adicionais -->
+
+    <section id="services" class="additional-services">
+        <div class="container">
+            <h2 class="section-title fade-in">Serviços Adicionais</h2>
+            <div class="services-grid">
+                <div class="service-item fade-in">
+                    <h4>Reel com transições criativas</h4>
+                    <p>(até 1 min)</p>
+                    <div class="service-price">R$ 200</div>
+                </div>
+                <div class="service-item fade-in">
+                    <h4>Making of da noiva</h4>
+                    <p>(avulso)</p>
+                    <div class="service-price">R$ 300</div>
+                </div>
+                <div class="service-item fade-in">
+                    <h4>Live da cerimônia</h4>
+                    <p>(Instagram)</p>
+                    <div class="service-price">R$ 400</div>
+                </div>
+                <div class="service-item fade-in">
+                    <h4>Mini Wedding Film</h4>
+                    <p>(3 min)</p>
+                    <div class="service-price">R$ 500</div>
+                </div>
+                <div class="service-item fade-in">
+                    <h4>Pré-Wedding</h4>
+                    <p>(1 reel de até 1min + stories)</p>
+                    <div class="service-price">R$ 500</div>
+                </div>
+                <div class="service-item fade-in">
+                    <h4>Hora extra de captação</h4>
+                    <div class="service-price">R$ 150/hora</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Story Highlight Section -->
+    <section class="story-highlight">
+        <div class="container">
+            <h2 class="section-title fade-in">Histórias que Tocam</h2>
+            <div class="story-cards">
+                <div class="story-card fade-in">
+                    <h3>Eloisa & Samuel</h3>
+                    <p>"Eles nos procuraram com um sonho simples: ter cada lágrima e sorriso documentado sem atrapalhar o momento. Entregamos mais do que vídeos — entregamos lembranças vivas que eles podem reviver para sempre." 💖</p>
+                    <span class="story-tag">Mini Wedding Film + Stories</span>
+                </div>
+                <div class="story-card fade-in">
+                    <h3>Nathany & Winston</h3>
+                    <p>"Um casamento íntimo no campo. Capturamos desde os preparativos da manhã até a última dança. O resultado? Um filme de 3 minutos que emociona a família inteira toda vez que assistem."</p>
+                    <span class="story-tag">Pacote Sakura Completo</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="testimonials">
+        <div class="container">
+            <h2 class="section-title fade-in">O que dizem sobre nós</h2>
+            <div class="testimonials-grid">
+                <div class="testimonial-card fade-in">
+                    <div class="stars">★★★★★</div>
+                    <p>"Cada detalhe foi capturado com tanta sensibilidade... reviver nosso casamento através dos stories foi como viver tudo de novo. Michelle e Paulo são incríveis!"</p>
+                    <strong>– Eloisa & Samuel</strong>
+                    <small>Pacote Himawari</small>
+                </div>
+                <div class="testimonial-card fade-in">
+                    <div class="stars">★★★★★</div>
+                    <p>"O making of da noiva ficou perfeito! Conseguiram capturar toda a emoção e nervosismo daquele momento único. Recomendo para todas as noivas!"</p>
+                    <strong>– Priscila Cerimonalista</strong>
+                    <small>Pacote Sakura</small>
+                </div>
+                <div class="testimonial-card fade-in">
+                    <div class="stars">★★★★★</div>
+                    <p>"Stories postados em tempo real foram um sucesso! Nossos familiares que não puderam estar presentes acompanharam tudo ao vivo. Simplesmente maravilhoso!"</p>
+                    <strong>– Nathany & Winston</strong>
+                    <small>Pacote Sumire</small>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="contact">
+        <div class="container">
+            <h2 class="section-title">Vamos Conversar?</h2>
+            <p>Estou à disposição para responder a todas as suas perguntas e fazer parte desse dia tão especial.</p>
+            <div class="contact-info">
+                <div class="contact-card">
+                    <span class="icon">📱</span>
+                    <h4>Telefone</h4>
+                    <a href="tel:+5562982888016">(62) 98288-8016</a>
+                </div>
+                <div class="contact-card">
+                    <span class="icon">💬</span>
+                    <h4>WhatsApp</h4>
+                    <a href="https://wa.me/5562982888016?text=Olá, Michele! Gostaria de saber mais sobre os serviços para meu casamento." target="_blank">Chamar no WhatsApp</a>
+                </div>
+                <div class="contact-card">
+                    <span class="icon">📸</span>
+                    <h4>Instagram</h4>
+                    <a href="https://instagram.com/keikoreels" target="_blank">@keikoreels</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Header background on scroll
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            if (window.scrollY > 100) {
+                header.style.background = 'rgba(255, 255, 255, 0.98)';
+                header.style.boxShadow = '0 2px 20px rgba(0,0,0,0.1)';
+            } else {
+                header.style.background = 'rgba(255, 255, 255, 0.95)';
+                header.style.boxShadow = 'none';
+            }
+        });
+
+        // Intersection Observer for fade-in animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        // Observe all fade-in elements
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Mobile menu toggle (for future implementation)
+        document.querySelector('.mobile-menu').addEventListener('click', function() {
+            // Add mobile menu functionality here
+            console.log('Mobile menu clicked');
+        });
+
+        // Add some interactive effects
+        document.querySelectorAll('.package-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-10px) scale(1.02)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                if (!this.classList.contains('featured')) {
+                    this.style.transform = 'translateY(0) scale(1)';
+                } else {
+                    this.style.transform = 'translateY(0) scale(1.05)';
+                }
+            });
+        });
+
+        // Add floating animation to hero elements
+        function addFloatingAnimation() {
+            const heroElements = document.querySelectorAll('.hero-content > *');
+            heroElements.forEach((element, index) => {
+                element.style.animation += `, floating 3s ease-in-out infinite ${index * 0.2}s`;
+            });
+        }
+
+        // Add floating keyframes
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes floating {
+                0%, 100% { transform: translateY(0px); }
+                50% { transform: translateY(-10px); }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Initialize floating animation after page load
+        window.addEventListener('load', addFloatingAnimation);
+
+        // Instagram Reels Functions
+        function openInstagramReel(url) {
+            // Abre o reel do Instagram em nova aba
+            window.open(url, '_blank');
+        }
+
+        function openReelModal(url) {
+            const modal = document.getElementById('reel-modal');
+            const container = document.getElementById('reel-container');
+            
+            // Criar iframe com embed do Instagram
+            const embedUrl = url + 'embed/';
+            container.innerHTML = `<iframe src="${embedUrl}" width="100%" height="100%" frameborder="0" scrolling="no" allowtransparency="true"></iframe>`;
+            
+            modal.style.display = 'block';
+        }
+
+        // Fechar modal
+        document.querySelector('.close-modal').addEventListener('click', function() {
+            const modal = document.getElementById('reel-modal');
+            modal.style.display = 'none';
+            document.getElementById('reel-container').innerHTML = '';
+        });
+
+        // Fechar modal clicando fora
+        window.addEventListener('click', function(event) {
+            const modal = document.getElementById('reel-modal');
+            if (event.target === modal) {
+                modal.style.display = 'none';
+                document.getElementById('reel-container').innerHTML = '';
+            }
+        });
+
+        // Carrega script do Instagram para embeds automáticos
+        (function() {
+            const script = document.createElement('script');
+            script.async = true;
+            script.src = 'https://www.instagram.com/embed.js';
+            document.head.appendChild(script);
+        })();
+    </script>
+</body>
+</html>
